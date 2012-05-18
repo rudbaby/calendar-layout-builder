@@ -1,0 +1,74 @@
+body {
+	font-family: "lucida grande", tahoma, verdana, arial, sans-serif;
+	font-size: small;
+	width: 900px;
+	margin: 10px auto;
+}
+
+.calendar {
+	height: 720px;
+	min-width: 700px;
+	margin: 15px 10px;
+}
+
+.times, .event-dashboard {
+	float: left;
+}
+
+.times {
+	margin: -5px 8px 0 0;
+	padding: 0;
+}
+
+.times li {
+	list-style: none;
+	text-align: right;
+	margin-bottom: 16px;
+	line-height: 14px;
+}
+
+li.h {
+	color: #333;
+}
+
+li.hh {
+	color: #aaa;
+	font-size: xx-small;
+}
+
+.event-dashboard {
+	width: 600px;
+	padding: 0 10px;
+	height: 720px;
+	background-color: #ECECEC;
+	position: relative;
+}
+
+.appt {
+	position: absolute;
+	background-color: #4C6FA9;
+	padding-left: 5px;
+	cursor: pointer;
+}
+
+.event-details {
+	background-color: white;
+	border: 1px solid #CCC;
+	border-left-width: 0px;
+	position: absolute;
+	bottom: 0;
+	top: 0;
+	right: 0;
+	left: 5px;
+	padding: 5px;
+	overflow: hidden;
+}
+
+.appt .title {
+	color: #758EBB;
+}
+
+.appt .loc {
+	color: gray;
+	font-size: xx-small;
+}

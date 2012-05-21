@@ -12,17 +12,17 @@ $(document).ready(function() {
     var itree = new IntervalTree(360); //center of the tree. which is mid of the calendar.
 
     function layOutDay(events) {
-        var event, width, layoutWidth = 600, idx = 0;
-        for (i in events) {
+        var event, width, layoutWidth = 600, idx = 0,i,eventsLength=events.length;
+        for (i=0;i<eventsLength;i++) {
             event = events[i];
             itree.add([event.start, event.end], idx++);
         }
-        for (i in events) {
+        for (i=0;i<eventsLength;i++) {
             event = events[i];
             if (!event.position) {
                 var overlappedEvents = itree.search(event.start, event.end);
                 if (overlappedEvents.length > 0) {
-                    console.info("overlap\n", JSON.stringify(overlappedEvents));
+                    //console.info("overlap\n", JSON.stringify(overlappedEvents));
                     var counter = 0, width = layoutWidth / overlappedEvents.length;
                     overlappedEvents.forEach(function(result) {
                         event = events[result.id];
@@ -45,7 +45,7 @@ $(document).ready(function() {
         {id : 4, start : 610, end : 670} // starts at 7:10pm pm and ends at 8:10 pm
     ]);
 
-    var eventHtml = $("#event-template").html().trim();
+    var eventHtml = $("#event-template").html();
 
     var eventDashBoard = $(".event-dashboard");
 

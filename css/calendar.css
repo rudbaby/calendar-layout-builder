@@ -2,7 +2,6 @@ body {
 	font-family: "lucida grande", tahoma, verdana, arial, sans-serif;
 	font-size: small;
 	width: 900px;
-	margin: 10px auto;
 }
 
 .calendar {
@@ -44,7 +43,7 @@ li.hh {
 	position: relative;
 }
 
-.appt {
+.event {
 	position: absolute;
 	background-color: #4C6FA9;
 	padding-left: 5px;
@@ -64,11 +63,11 @@ li.hh {
 	overflow: hidden;
 }
 
-.appt .title {
+.event .title {
 	color: #758EBB;
 }
 
-.appt .loc {
+.event .loc {
 	color: gray;
 	font-size: xx-small;
 }

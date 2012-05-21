@@ -32,7 +32,7 @@ function SortedList() {
 
   ["0","1"].forEach(function(n) {
     var val = args[n];
-    if (Array.isArray(val)) {
+    if (isArray(val)) {
       arr = val;
     }
     else if (val && typeof val == "object") {

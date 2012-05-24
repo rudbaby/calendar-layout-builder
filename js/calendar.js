@@ -8,36 +8,36 @@
  *                        start and end time. The object should be laid out so that there are no overlapping
  *                        events.
  */
-$(document).ready(function() {
+function layOutDay(events) {
     var itree = new IntervalTree(360); //center of the tree. which is mid of the calendar.
-
-    function layOutDay(events) {
-        var event, width, layoutWidth = 600, idx = 0,i,eventsLength=events.length;
-        for (i=0;i<eventsLength;i++) {
-            event = events[i];
-            itree.add([event.start, event.end], idx++);
-        }
-        for (i=0;i<eventsLength;i++) {
-            event = events[i];
-            if (!event.position) {
-                var overlappedEvents = itree.search(event.start, event.end);
-                if (overlappedEvents.length > 0) {
-                    //console.info("overlap\n", JSON.stringify(overlappedEvents));
-                    var counter = 0, width = layoutWidth / overlappedEvents.length;
-                    overlappedEvents.forEach(function(result) {
-                        event = events[result.id];
-                        if (!event.position) {
-                            event.position = {top : event.start, left:width * counter++,width:width};
-                        }
-                    });
-                } else {
-                    event.position = {top : event.start, left:0,width:layoutWidth};
-                }
+    var event, width, layoutWidth = 600, idx = 0,i,eventsLength=events.length;
+    for (i=0;i<eventsLength;i++) {
+        event = events[i];
+        itree.add([event.start, event.end], idx++);
+    }
+    for (i=0;i<eventsLength;i++) {
+        event = events[i];
+        if (!event.position) {
+            var overlappedEvents = itree.search(event.start, event.end);
+            if (overlappedEvents.length > 0) {
+                //console.info("overlap\n", JSON.stringify(overlappedEvents));
+                var counter = 0, width = layoutWidth / overlappedEvents.length;
+                overlappedEvents.forEach(function(result) {
+                    event = events[result.id];
+                    if (!event.position) {
+                        event.position = {top : event.start, left:width * counter++,width:width};
+                    }
+                });
+            } else {
+                event.position = {top : event.start, left:0,width:layoutWidth};
             }
         }
-        return events;
     }
-
+    return events;
+}
+    
+$(document).ready(function() {
+   
     var processedEvents = layOutDay([
         {id : 1, start : 30,  end : 150},// starts at 9:30 am and ends at 11:30 am
         {id : 2, start : 540, end : 600},// starts at 6:00 pm and ends at 7:00pm

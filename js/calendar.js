@@ -20,7 +20,6 @@ function layOutDay(events) {
         if (!event.position) {
             var overlappedEvents = itree.search(event.start, event.end);
             if (overlappedEvents.length > 0) {
-                //console.info("overlap\n", JSON.stringify(overlappedEvents));
                 var counter = 0, width = layoutWidth / overlappedEvents.length;
                 overlappedEvents.forEach(function(result) {
                     event = events[result.id];

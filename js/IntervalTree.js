@@ -61,13 +61,12 @@ function IntervalTree(center, options) {
  **/
 IntervalTree.prototype.add = function(start,end) {
   id = this._autoIncrement;
-  var itvl = new Interval(start,end, id/*, this.startKey, this.endKey*/);
+  var itvl = new Interval(start,end, id);
   this.pointTree.insert([itvl.start, id]);
   this.pointTree.insert([itvl.end,   id]);
   this.intervalHash[id] = itvl;
   this._autoIncrement++;
   _insert.call(this, this.root, itvl);
-  //console.log("point tree : after inserting  ",id, data,"\n", this.pointTree);
 };
 
 /**
@@ -99,14 +98,14 @@ IntervalTree.prototype.search = function(val1, val2) {
 function _insert(node, itvl) {
   if (itvl.end < node.idx) {
     if (!node.left) {
-      node.left = new Node(itvl.start + itvl.end >>> 1, this);
+      node.left = new Node((itvl.start + itvl.end) >>> 1, this);
     }
     return _insert.call(this, node.left, itvl);
   }
 
   if (node.idx < itvl.start) {
     if (!node.right) {
-      node.right = new Node(itvl.start + itvl.end >>> 1, this);
+      node.right = new Node((itvl.start + itvl.end) >>> 1, this);
     }
     return _insert.call(this, node.right, itvl);
   }
@@ -159,28 +158,22 @@ function _rangeSearch(start, end, arr) {
     throw new Error('end must be greater than start. start: ' + start + ', end: ' + end);
   }
   var resultHash = {};
-
   var wholeWraps = [];
-  _pointSearch.call(this, this.root, (start + end) >>> 1, wholeWraps, true);
 
+  _pointSearch.call(this, this.root, (start + end) >>> 1, wholeWraps, true);
   wholeWraps.forEach(function(result) {
     resultHash[result.id] = true;
   });
-
-  //console.log("pont tree \n", this.pointTree);
   var idx1 = this.pointTree.bsearch([start, null]);
-  //console.info("bsearch idx1 for start", start, ":",idx1);
   while (idx1 >= 0 && this.pointTree.arr[idx1][0] == start) {
     idx1--;
   }
 
   var idx2 = this.pointTree.bsearch([end,   null]);
-  //console.info("bsearch idx2 for end ", end ,":", idx2);
   var len = this.pointTree.arr.length -1;
   while (idx2 <= len && this.pointTree.arr[idx2][0] <= end) {
     idx2++;
   }
-  //console.log("idx1[",idx1,"] idx2[",idx2+"]");
   this.pointTree.arr.slice(idx1 + 1, idx2).forEach(function(point) {
     var id = point[1];
     resultHash[id] = true;

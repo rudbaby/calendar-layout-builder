@@ -13,7 +13,7 @@ function layOutDay(events) {
     var event, width, layoutWidth = 600, idx = 0,i,eventsLength=events.length;
     for (i=0;i<eventsLength;i++) {
         event = events[i];
-        itree.add([event.start, event.end], idx++);
+        itree.add(event.start, event.end, idx++);
     }
     for (i=0;i<eventsLength;i++) {
         event = events[i];

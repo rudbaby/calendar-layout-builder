@@ -24,7 +24,6 @@ DEALINGS IN THE SOFTWARE.
 /**
  * IntervalTree
  *
- * @param (object) data:
  * @param (number) center:
  * @param (object) options:
  *   center:
@@ -32,9 +31,6 @@ DEALINGS IN THE SOFTWARE.
  **/
 function IntervalTree(center, options) {
   options || (options = {});
-
-  this.startKey     = options.startKey || 0; // start key
-  this.endKey       = options.endKey   || 1; // end key
   this.intervalHash = {};                    // id => interval object
   this.pointTree = new SortedList({          // b-tree of start, end points 
     compare: function(a, b) {
@@ -55,37 +51,24 @@ function IntervalTree(center, options) {
   this.root = new Node(center, this);
 }
 
-
 /**
- * publid methods
+ * public methods
  **/
 
 
 /**
  * add new range
  **/
-IntervalTree.prototype.add = function(data, id) {
-  if (this.intervalHash[id]) {
-    throw new Error('id ' + id + ' is already registered.');
-  }
-
-  if (id == undefined) {
-    while (this.intervalHash[this._autoIncrement]) {
-      this._autoIncrement++;
-    }
-    id = this._autoIncrement;
-  }
-
-  var itvl = new Interval(data, id, this.startKey, this.endKey);
+IntervalTree.prototype.add = function(start,end) {
+  id = this._autoIncrement;
+  var itvl = new Interval(start,end, id/*, this.startKey, this.endKey*/);
   this.pointTree.insert([itvl.start, id]);
   this.pointTree.insert([itvl.end,   id]);
   this.intervalHash[id] = itvl;
   this._autoIncrement++;
   _insert.call(this, this.root, itvl);
-    //console.log("point tree : after inserting  ",id, data,"\n", this.pointTree);
-
+  //console.log("point tree : after inserting  ",id, data,"\n", this.pointTree);
 };
-
 
 /**
  * search
@@ -98,27 +81,12 @@ IntervalTree.prototype.search = function(val1, val2) {
   if (typeof val1 != 'number') {
     throw new Error(val1 + ': invalid input');
   }
-
-  if (val2 == undefined) {
-    _pointSearch.call(this, this.root, val1, ret);
+  if (typeof val2 != 'number') {
+    throw new Error(val2 + ': invalid input');
   }
-  else if (typeof val2 == 'number') {
-    _rangeSearch.call(this, val1, val2, ret);
-  }
-  else {
-    throw new Error(val1 + ',' + val2 + ': invalid input');
-  }
+  _rangeSearch.call(this, val1, val2, ret);
   return ret;
 };
-
-
-/**
- * remove: 
- **/
-IntervalTree.prototype.remove = function(interval_id) {
-};
-
-
 
 /**
  * private methods
@@ -264,16 +232,13 @@ Node.prototype.insert = function(interval) {
   this.ends.insert(interval);
 };
 
-
-
 /**
  * Interval : prototype of interval info
  **/
-function Interval(data, id, s, e) {
+function Interval(start,end, id) {
   this.id     = id;
-  this.start  = data[s];
-  this.end    = data[e];
-  this.data   = data;
+  this.start  = start;
+  this.end    = end;
 
   if (typeof this.start != 'number' || typeof this.end != 'number') {
     throw new Error('start, end must be number. start: ' + this.start + ', end: ' + this.end);
@@ -288,19 +253,9 @@ function Interval(data, id, s, e) {
  * get result object
  **/
 Interval.prototype.result = function(start, end) {
-  var ret = {
+  return {
     id   : this.id,
-    data : this.data
+    start : this.start,
+    end: this.end
   };
-  if (typeof start == 'number' && typeof end == 'number') {
-    /**
-     * calc overlapping rate
-     **/
-    var left  = Math.max(this.start, start);
-    var right = Math.min(this.end,   end);
-    var lapLn = right - left;
-    ret.rate1 = lapLn / (end - start);
-    ret.rate2 = lapLn / (this.end - this.start);
-  }
-  return ret;
 };

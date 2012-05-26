@@ -98,14 +98,14 @@ IntervalTree.prototype.search = function(val1, val2) {
 function _insert(node, itvl) {
   if (itvl.end < node.idx) {
     if (!node.left) {
-      node.left = new Node((itvl.start + itvl.end) >>> 1, this);
+      node.left = new Node(itvl.end, this);
     }
     return _insert.call(this, node.left, itvl);
   }
 
   if (node.idx < itvl.start) {
     if (!node.right) {
-      node.right = new Node((itvl.start + itvl.end) >>> 1, this);
+      node.right = new Node(itvl.end, this);
     }
     return _insert.call(this, node.right, itvl);
   }
@@ -125,7 +125,11 @@ function _pointSearch(node, idx, arr) {
   if (idx < node.idx) {
     node.starts.arr.every(function(itvl) {
       var bool = (itvl.start <= idx);
-      if (bool) arr.push(itvl.result());
+
+      if (bool){
+          console.info("starts",idx,  itvl.end, bool);
+          arr.push(itvl.result());
+      }
       return bool;
     });
     return _pointSearch.call(this, node.left, idx, arr);
@@ -134,13 +138,18 @@ function _pointSearch(node, idx, arr) {
   else if (idx > node.idx) {
     node.ends.arr.every(function(itvl) {
       var bool = (itvl.end >= idx);
-      if (bool) arr.push(itvl.result());
+
+        if (bool){
+            console.info("ends",idx,  itvl.end, bool);
+            arr.push(itvl.result());
+        }
       return bool;
     });
     return _pointSearch.call(this, node.right, idx, arr);
   }
   // exact equal
   else {
+      console.info("ivtl", node.starts.arr);
     node.starts.arr.map(function(itvl) { arr.push(itvl.result()) });
   }
 }
@@ -160,10 +169,11 @@ function _rangeSearch(start, end, arr) {
   var resultHash = {};
   var wholeWraps = [];
 
-  _pointSearch.call(this, this.root, (start + end) >>> 1, wholeWraps, true);
+  /*_pointSearch.call(this, this.root, end, wholeWraps, true);
   wholeWraps.forEach(function(result) {
     resultHash[result.id] = true;
   });
+  console.info(resultHash);*/
   var idx1 = this.pointTree.bsearch([start, null]);
   while (idx1 >= 0 && this.pointTree.arr[idx1][0] == start) {
     idx1--;
@@ -171,9 +181,10 @@ function _rangeSearch(start, end, arr) {
 
   var idx2 = this.pointTree.bsearch([end,   null]);
   var len = this.pointTree.arr.length -1;
-  while (idx2 <= len && this.pointTree.arr[idx2][0] <= end) {
+  while (idx2 <= len && this.pointTree.arr[idx2][0] < end) {
     idx2++;
   }
+  //console.info(start, end,this.pointTree.arr.slice(idx1 + 1, idx2), idx1+1, idx2);
   this.pointTree.arr.slice(idx1 + 1, idx2).forEach(function(point) {
     var id = point[1];
     resultHash[id] = true;

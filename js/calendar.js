@@ -13,6 +13,9 @@ function layOutDay(events) {
     var event, width, layoutWidth = 600, idx = 0,i,eventsLength=events.length;
     for (i=0;i<eventsLength;i++) {
         event = events[i];
+        if(event.start < 0 || event.start > 840){
+            throw new Error('event time should be in between 0 to 840 ( 9AM to 9PM)');
+        }
         itree.add(event.start, event.end, idx++);
     }
     for (i=0;i<eventsLength;i++) {
@@ -41,7 +44,9 @@ $(document).ready(function() {
         {id : 1, start : 30,  end : 150},// starts at 9:30 am and ends at 11:30 am
         {id : 2, start : 540, end : 600},// starts at 6:00 pm and ends at 7:00pm
         {id : 3, start : 560, end : 620},// starts at 6:20pm and ends at 7:20pm
-        {id : 4, start : 610, end : 670} // starts at 7:10pm pm and ends at 8:10 pm
+        {id : 4, start : 610, end : 670}, // starts at 7:10pm pm and ends at 8:10 pm
+        {id : 5, start : 640, end : 670}, // starts at 7:10pm pm and ends at 8:10 pm
+        {id : 6, start : 610, end : 670} // starts at 7:10pm pm and ends at 8:10 pm
     ]);
 
     var eventHtml = $("#event-template").html();

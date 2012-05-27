@@ -71,3 +71,12 @@ li.hh {
 	color: gray;
 	font-size: xx-small;
 }
+.testcase li{
+	list-style: none;
+	float:left;
+	margin-left:10px;
+	cursor: pointer;
+	color: #4C6FA9;
+	border: 1px solid #4C6FA9;
+	padding: 2px;
+}

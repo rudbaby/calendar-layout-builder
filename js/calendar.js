@@ -86,57 +86,7 @@ function layOutDay(events) {
     }
     return events;
 }
-    
-$(document).ready(function() {
-
-   var processedEvents = layOutDay([
-        {id : 1, start : 30,  end : 150},// starts at 9:30 am and ends at 11:30 am
-        {id : 2, start : 540, end : 600},// starts at 6:00 pm and ends at 7:00pm
-        {id : 3, start : 560, end : 620},// starts at 6:20pm and ends at 7:20pm
-        {id : 4, start : 600, end : 650} // starts at 7:10pm pm and ends at 8:10 pm
-    ]);
-
-   /* var processedEvents = layOutDay([
-        {id : 1, start : 60, end : 120},// starts at 6:00 pm and ends at 7:00pm
-        {id : 2, start : 60,  end : 90},// starts at 9:30 am and ends at 11:30 am
-        {id : 3, start : 90, end : 120},// starts at 6:20pm and ends at 7:20pm
-        {id : 4, start : 600, end : 650}, // starts at 7:10pm pm and ends at 8:10 pm
-        {id : 5, start : 630, end : 650} // starts at 7:10pm pm and ends at 8:10 pm
-    ]);*/
-   /* var processedEvents = layOutDay([
-        {id : 1, start : 30,  end : 150},// starts at 9:30 am and ends at 11:30 am
-        {id : 2, start : 540, end : 600},// starts at 6:00 pm and ends at 7:00pm
-        {id : 3, start : 560, end : 620},// starts at 6:20pm and ends at 7:20pm
-        {id : 4, start : 600, end : 650}, // starts at 7:10pm pm and ends at 8:10 pm
-        {id : 5, start : 630, end : 660} // starts at 7:10pm pm and ends at 8:10 pm
-    ]);*/
-    /*var processedEvents = layOutDay([
-        {id : 1, start : 450,  end : 480},// starts at 9:30 am and ends at 11:30 am
-        {id : 2, start : 470, end : 500},// starts at 6:00 pm and ends at 7:00pm
-        {id : 3, start : 480, end : 510},// starts at 6:20pm and ends at 7:20pm
-        {id : 4, start : 480, end : 510}, // starts at 7:10pm pm and ends at 8:10 pm
-        {id : 6, start : 495, end : 525} // starts at 7:10pm pm and ends at 8:10 pm
-    ]);*/
-
-    //two more test cases -- uncomment the following to test it.
-   /* var processedEvents = layOutDay([
-        {id : 1, start : 30,  end : 150},// starts at 9:30 am and ends at 11:30 am
-        {id : 2, start : 540, end : 600},// starts at 6:00 pm and ends at 7:00pm
-        {id : 3, start : 560, end : 620},// starts at 6:20pm and ends at 7:20pm
-        {id : 4, start : 600, end : 650}, // starts at 7:10pm pm and ends at 8:10 pm
-        {id : 6, start : 610, end : 670} // starts at 7:10pm pm and ends at 8:10 pm
-    ]);*/
-    /*var processedEvents = layOutDay([
-        {id : 1, start : 0,  end : 60},// starts at 9:30 am and ends at 11:30 am
-        {id : 2, start : 30, end : 150},// starts at 6:00 pm and ends at 7:00pm
-        {id : 3, start : 90, end : 180},// starts at 6:00 pm and ends at 7:00pm
-        {id : 4, start : 120, end : 180},// starts at 6:20pm and ends at 7:20pm
-        {id : 5, start : 240, end : 300}, // starts at 7:10pm pm and ends at 8:10 pm
-        {id : 6, start : 270, end : 360}, // starts at 7:10pm pm and ends at 8:10 pm
-        {id : 8, start : 300, end : 360}, // starts at 7:10pm pm and ends at 8:10 pm
-        {id : 7, start : 300, end : 420} // starts at 7:10pm pm and ends at 8:10 pm
-    ]);*/
-
+function renderLayout(processedEvents){
     var eventHtml = $("#event-template").html();
 
     var eventDashBoard = $(".event-dashboard");
@@ -149,4 +99,63 @@ $(document).ready(function() {
             width:event.position.width - 5
         }).appendTo(eventDashBoard);
     });
+}
+$(document).ready(function() {
+
+    $(".testcase li").bind("click", function(evt) {
+        var target = $(evt.target);
+        $(".event-dashboard").html("");
+        renderLayout(layOutDay(testSample[target.attr("id")]));
+    });
+    var testSample = [];
+
+
+    testSample[0] = [
+        {id : 1, start : 30,  end : 150},
+        {id : 2, start : 540, end : 600},
+        {id : 3, start : 560, end : 620},
+        {id : 4, start : 600, end : 650}
+    ];
+    testSample[1] = [
+        {id : 1, start : 60, end : 120},
+        {id : 2, start : 60,  end : 90},
+        {id : 3, start : 90, end : 120},
+        {id : 4, start : 600, end : 650},
+        {id : 5, start : 630, end : 650}
+    ];
+    testSample[2] = [
+        {id : 1, start : 30,  end : 150},
+        {id : 2, start : 540, end : 600},
+        {id : 3, start : 560, end : 620},
+        {id : 4, start : 600, end : 650},
+        {id : 5, start : 630, end : 660}
+    ];
+    testSample[3] = [
+        {id : 1, start : 450,  end : 480},
+        {id : 2, start : 470, end : 500},
+        {id : 3, start : 480, end : 510},
+        {id : 4, start : 480, end : 510},
+        {id : 6, start : 495, end : 525}
+    ];
+
+    testSample[4] = [
+        {id : 1, start : 30,  end : 150},
+        {id : 2, start : 540, end : 600},
+        {id : 3, start : 560, end : 620},
+        {id : 4, start : 600, end : 650},
+        {id : 6, start : 610, end : 670}
+    ];
+    testSample[5] = [
+        {id : 1, start : 0,  end : 60},
+        {id : 2, start : 30, end : 150},
+        {id : 3, start : 90, end : 180},
+        {id : 4, start : 120, end : 180},
+        {id : 5, start : 240, end : 300},
+        {id : 6, start : 270, end : 360},
+        {id : 8, start : 300, end : 360},
+        {id : 7, start : 300, end : 420}
+    ];
+    var processedEvents = layOutDay(testSample[0]);
+    renderLayout(processedEvents);
+
 });
